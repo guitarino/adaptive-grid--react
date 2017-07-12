@@ -1,2 +1,3 @@
-# adaptive-grid--react
-Adaptive Grid for React
+# Adaptive Grid for React
+
+Adaptive Grid Component for React
