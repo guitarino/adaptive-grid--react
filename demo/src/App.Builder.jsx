@@ -121,7 +121,7 @@ export default class App extends React.Component {
     return (
       <div className='App'>
         <div>
-          <a href='index.html'>Read-only grid</a>
+          <a href='index.html'>Regular Adaptive Grid</a>
         </div>
         <dl className='App__baseVals'>
           <dt>Base width</dt>
@@ -153,10 +153,7 @@ export default class App extends React.Component {
         >
           {
             this.state.items.map((item, i) => (
-              <AdaptiveGridItem
-                key={i}
-                { ...item }
-              >
+              <AdaptiveGridItem { ...item }>
                 <Card>
                   <form
                     onSubmit={this.updateItem(item)}

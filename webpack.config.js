@@ -4,7 +4,8 @@ const path = require('path');
 module.exports = {
   entry: {
     main: './demo/src/index.js',
-    builder: './demo/src/builder.js'
+    builder: './demo/src/builder.js',
+    content: './demo/src/content.js'
   },
   output: {
     path: path.resolve(__dirname, 'demo/build'),

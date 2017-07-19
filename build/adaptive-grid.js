@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AdaptiveGrid = undefined;
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -45,27 +47,23 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
   function AdaptiveGrid() {
     _classCallCheck(this, AdaptiveGrid);
 
-    var _this = _possibleConstructorReturn(this, (AdaptiveGrid.__proto__ || Object.getPrototypeOf(AdaptiveGrid)).call(this));
-
-    _this.state = { width: 0 };
-    _this.onResize = _this.onResize.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (AdaptiveGrid.__proto__ || Object.getPrototypeOf(AdaptiveGrid)).apply(this, arguments));
   }
 
   _createClass(AdaptiveGrid, [{
     key: 'render',
     value: function render() {
-      var children = this.getFilteredChildren();
-      var gridStyle = {
+      var children = this.getFilteredChildren(),
+          gridStyle = {
         overflow: 'visible',
         position: 'relative'
       };
       if (this.canCalculate()) {
-        var totalColumns = this.getTotalColumns();
-        var colWidth = this.getColWidth(totalColumns);
-        var sizes = this.getItemSizes(children, totalColumns);
-        var coords = this.getItemCoordinates(children, sizes, totalColumns);
-        children = this.applyItemStyles(children, colWidth, sizes, coords);
+        var totalColumns = this.getTotalColumns(),
+            colWidth = this.getColWidth(totalColumns),
+            sizes = this.getItemSizes(children, totalColumns),
+            coords = this.getItemCoordinates(children, sizes, totalColumns),
+            children = this.applyItemStyles(children, colWidth, sizes, coords);
         gridStyle.height = this.getGridMaxHeight(children, sizes, coords) + 'px';
       } else {
         gridStyle.visibility = 'hidden';
@@ -79,6 +77,12 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
         _react2.default.createElement(_resizeSensorReact2.default, { onResize: this.onResize }),
         children
       );
+    }
+  }, {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.state = { width: 0 };
+      this.onResize = this.onResize.bind(this);
     }
 
     // callback from resize-sensor
@@ -132,8 +136,8 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
       var _this2 = this;
 
       return children.map(function (child) {
-        var width = _this2.props.baseWidth;
-        var height = _this2.props.baseHeight;
+        var width = _this2.props.baseWidth,
+            height = _this2.props.baseHeight;
         if (child.props) {
           if (child.props.minWidth) {
             width = child.props.minWidth;
@@ -148,25 +152,24 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
   }, {
     key: 'getItemCoordinates',
     value: function getItemCoordinates(children, sizes, totalColumns) {
-      var remainingElements = [].slice.call(children);
+      var remainingElements = [].slice.call(children),
+
       // remainingElementsIds is in sync with remainingElements so that
       // we don't have to search for indeces every time
-      var remainingElementsIds = Object.keys(children);
-      var coords = [];
-      var row = 0;
-      var boundaries = []; // array for boundaries of current grid items
+      remainingElementsIds = Object.keys(children),
+          coords = [],
+          row = 0,
+          boundaries = [] // array for boundaries of current grid items
+      ;
       // filling up the grid and removing remainingElements until none left
       while (remainingElements.length) {
         for (var col = 0; col < totalColumns; col++) {
           for (var elId = 0; elId < remainingElements.length; elId++) {
-            var childId = remainingElementsIds[elId];
-
-            var _sizes$childId = _slicedToArray(sizes[childId], 2),
+            var childId = remainingElementsIds[elId],
+                _sizes$childId = _slicedToArray(sizes[childId], 2),
                 cols = _sizes$childId[0],
                 rows = _sizes$childId[1];
             // if not exceeding the boundary
-
-
             if (col + cols <= totalColumns) {
               // and if other items are not in the way
               if (!isFilled(col, row, col + cols, row + rows, boundaries)) {
@@ -195,7 +198,7 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
       return children.map(function (child, i) {
         return _react2.default.createElement(
           AdaptiveGridItem,
-          {
+          _extends({}, child.props, {
             key: i,
             childStyle: {
               position: 'absolute',
@@ -204,7 +207,7 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
               width: sizes[i][0] * colWidth + 'px',
               height: sizes[i][1] * _this3.props.baseHeight + 'px'
             }
-          },
+          }),
           child.props.children
         );
       });
@@ -216,9 +219,8 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
       children.forEach(function (child, i) {
         var _coords$i = _slicedToArray(coords[i], 2),
             col = _coords$i[0],
-            row = _coords$i[1];
-
-        var _sizes$i = _slicedToArray(sizes[i], 2),
+            row = _coords$i[1],
+            _sizes$i = _slicedToArray(sizes[i], 2),
             cols = _sizes$i[0],
             rows = _sizes$i[1];
 

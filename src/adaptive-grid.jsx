@@ -16,24 +16,27 @@ export function AdaptiveGridItem(props) {
 };
 
 export class AdaptiveGrid extends React.Component {
-  constructor() {
-    super();
-    this.state = { width: 0 };
-    this.onResize = this.onResize.bind(this);
-  }
-
   render() {
-    var children = this.getFilteredChildren();
-    var gridStyle = {
-      overflow: 'visible',
-      position: 'relative'
-    };
+    var
+      children = this.getFilteredChildren()
+    ,
+      gridStyle = {
+        overflow: 'visible',
+        position: 'relative'
+      }
+    ;
     if (this.canCalculate()) {
-      var totalColumns = this.getTotalColumns();
-      var colWidth = this.getColWidth(totalColumns);
-      var sizes = this.getItemSizes(children, totalColumns);
-      var coords = this.getItemCoordinates(children, sizes, totalColumns);
-      children = this.applyItemStyles(children, colWidth, sizes, coords);
+      var
+        totalColumns = this.getTotalColumns()
+      ,
+        colWidth = this.getColWidth(totalColumns)
+      ,
+        sizes = this.getItemSizes(children, totalColumns)
+      ,
+        coords = this.getItemCoordinates(children, sizes, totalColumns)
+      ,
+        children = this.applyItemStyles(children, colWidth, sizes, coords)
+      ;
       gridStyle.height = this.getGridMaxHeight(children, sizes, coords) + 'px';
     }
     else {
@@ -51,6 +54,11 @@ export class AdaptiveGrid extends React.Component {
         { children }
       </div>
     );
+  }
+  
+  componentWillMount() {
+    this.state = { width: 0 };
+    this.onResize = this.onResize.bind(this);
   }
   
   // callback from resize-sensor
@@ -92,8 +100,11 @@ export class AdaptiveGrid extends React.Component {
 
   getItemSizes(children, totalColumns) {
     return children.map((child) => {
-      var width = this.props.baseWidth;
-      var height = this.props.baseHeight;
+      var
+        width = this.props.baseWidth
+      ,
+        height = this.props.baseHeight
+      ;
       if(child.props) {
         if(child.props.minWidth) {
           width = child.props.minWidth;
@@ -110,19 +121,28 @@ export class AdaptiveGrid extends React.Component {
   }
 
   getItemCoordinates(children, sizes, totalColumns) {
-    var remainingElements = [].slice.call(children);
+    var
+      remainingElements = [].slice.call(children)
+    ,
     // remainingElementsIds is in sync with remainingElements so that
     // we don't have to search for indeces every time
-    var remainingElementsIds = Object.keys(children);
-    var coords = [];
-    var row = 0;
-    var boundaries = []; // array for boundaries of current grid items
+      remainingElementsIds = Object.keys(children)
+    ,
+      coords = []
+    ,
+      row = 0
+    ,
+      boundaries = [] // array for boundaries of current grid items
+    ;
     // filling up the grid and removing remainingElements until none left
     while(remainingElements.length) {
       for(var col = 0; col < totalColumns; col++) {
         for(var elId = 0; elId < remainingElements.length; elId++) {
-          var childId = remainingElementsIds[elId];
-          var [cols, rows] = sizes[childId];
+          var
+            childId = remainingElementsIds[elId]
+          ,
+            [cols, rows] = sizes[childId]
+          ;
           // if not exceeding the boundary
           if(col + cols <= totalColumns) {
             // and if other items are not in the way
@@ -148,6 +168,7 @@ export class AdaptiveGrid extends React.Component {
   applyItemStyles(children, colWidth, sizes, coords) {
     return children.map((child, i) => (
       <AdaptiveGridItem
+        {...child.props}
         key={i}
         childStyle={{
           position: 'absolute',
@@ -165,8 +186,11 @@ export class AdaptiveGrid extends React.Component {
   getGridMaxHeight(children, sizes, coords) {
     var maxRow = 0;
     children.forEach((child, i) => {
-      var [col, row] = coords[i];
-      var [cols, rows] = sizes[i];
+      var
+        [col, row] = coords[i]
+      ,
+        [cols, rows] = sizes[i]
+      ;
       if (row + rows > maxRow) {
         maxRow = row + rows;
       }

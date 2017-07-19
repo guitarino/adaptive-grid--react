@@ -22,6 +22,9 @@ export default class App extends React.Component {
         <div>
           <a href='builder.html'>Play with it!</a>
         </div>
+        <div>
+          <a href='content.html'>Adaptive Content Grid</a>
+        </div>
         <AdaptiveGrid baseWidth={w} baseHeight={h} maxColumns={8}>
           <AdaptiveGridItem>
             <Card>One</Card>
@@ -47,8 +50,6 @@ export default class App extends React.Component {
           <AdaptiveGridItem>
             <Card>Eight</Card>
           </AdaptiveGridItem>
-
-          
           <AdaptiveGridItem minWidth={2*w} minHeight={2*h}>
             <Card>Nine</Card>
           </AdaptiveGridItem>
