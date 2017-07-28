@@ -53,12 +53,13 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
   _createClass(AdaptiveGrid, [{
     key: 'render',
     value: function render() {
-      var children = this.getFilteredChildren(),
+      var children = [],
           gridStyle = {
         overflow: 'visible',
         position: 'relative'
       };
       if (this.canCalculate()) {
+        children = this.getFilteredChildren();
         var totalColumns = this.getTotalColumns(),
             colWidth = this.getColWidth(totalColumns),
             sizes = this.getItemSizes(children, totalColumns),

@@ -204,12 +204,8 @@ var AdaptiveGrid = exports.AdaptiveGrid = function (_React$Component) {
     value: function makeVisible() {
       var self = this;
       window.requestAnimationFrame(function () {
-        window.requestAnimationFrame(function () {
-          window.requestAnimationFrame(function () {
-            self.visible = true;
-            self.forceUpdate();
-          });
-        });
+        self.visible = true;
+        self.forceUpdate();
       });
     }
 

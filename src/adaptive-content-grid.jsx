@@ -165,12 +165,8 @@ export class AdaptiveGrid extends React.Component {
   makeVisible() {
     var self = this;
     window.requestAnimationFrame(function() {
-      window.requestAnimationFrame(function() {
-        window.requestAnimationFrame(function() {
-          self.visible = true;
-          self.forceUpdate();
-        })
-      })
+      self.visible = true;
+      self.forceUpdate();
     })
   }
 

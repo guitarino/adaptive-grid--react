@@ -18,7 +18,7 @@ export function AdaptiveGridItem(props) {
 export class AdaptiveGrid extends React.Component {
   render() {
     var
-      children = this.getFilteredChildren()
+      children = []
     ,
       gridStyle = {
         overflow: 'visible',
@@ -26,6 +26,7 @@ export class AdaptiveGrid extends React.Component {
       }
     ;
     if (this.canCalculate()) {
+      children = this.getFilteredChildren();
       var
         totalColumns = this.getTotalColumns()
       ,
