@@ -1,6 +1,6 @@
 {
   "name": "adaptive-grid--react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Adaptive Grid for React",
   "main": "./build/adaptive-grid.js",
   "scripts": {
